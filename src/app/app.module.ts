@@ -1,11 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+import { Push } from '@ionic-native/push';
+
 import { MyApp } from './app.component';
+import { BarcodeScanner } from  '@ionic-native/barcode-scanner';
 import { HomePage } from '../pages/home/home';
+import { ConnectProvider } from '../providers/connect/connect';
 
 @NgModule({
   declarations: [
@@ -14,7 +19,19 @@ import { HomePage } from '../pages/home/home';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpModule,
+    IonicModule.forRoot(MyApp,{
+      platforms: {
+        ios: {
+          scrollAssist: false,
+          autoFocusAssist: false
+        },
+        android: {
+          scrollAssist: false,
+          autoFocusAssist: false
+        }
+      }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -23,8 +40,11 @@ import { HomePage } from '../pages/home/home';
   ],
   providers: [
     StatusBar,
+    Push,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    BarcodeScanner,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ConnectProvider
   ]
 })
 export class AppModule {}
